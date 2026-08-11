@@ -1,30 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using HackerRank1.DataAccess.Data;
+using HackerRank1.DataAccess.Repositories;
 using HackerRank1.Entities.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HackerRank1.BusinessLogic.Services
 {
     public class BooksService : IBooksService
     {
-        private readonly LibraryContext _libraryContext;
+        private readonly IBooksRepository _booksRepository;
 
-        public BooksService(LibraryContext libraryContext)
+        public BooksService(IBooksRepository booksRepository)
         {
-            _libraryContext = libraryContext;
+            _booksRepository = booksRepository;
         }
 
         public async Task<IEnumerable<Book>> Get(int libraryId, int[] ids)
         {
-            var query = _libraryContext.Books.AsQueryable().Where(b => b.LibraryId == libraryId);
-
-            if (ids != null && ids.Any())
-                query = query.Where(b => ids.Contains(b.Id));
-
-            return await query.ToListAsync();
+            return await _booksRepository.Get(libraryId, ids);
         }
 
         public async Task<Book> Add(Book book)

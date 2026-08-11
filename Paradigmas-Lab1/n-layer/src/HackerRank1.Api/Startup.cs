@@ -3,6 +3,7 @@ using System.Text;
 using HackerRank1.Entities.Settings;
 using HackerRank1.BusinessLogic.Services;
 using HackerRank1.DataAccess.Data;
+using HackerRank1.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,8 +68,10 @@ namespace HackerRank1.Api
                 .AllowAnyMethod()));
 
             // Add support for Dependency Injection for internal services (BooksService and LibrariesService)
-            services.AddTransient<ILibrariesService, LibrariesService>();
-            services.AddTransient<IBooksService, BooksService>();
+            services.AddScoped<ILibrariesRepository, LibrariesRepository>();
+            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<ILibrariesService, LibrariesService>();
+            services.AddScoped<IBooksService, BooksService>();
 
             services.AddDbContextPool<LibraryContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), npgsqlOptions =>
