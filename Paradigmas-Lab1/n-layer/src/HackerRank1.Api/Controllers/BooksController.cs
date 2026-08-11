@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using HackerRank1.BusinessLogic.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HackerRank1.Api.Controllers
@@ -19,7 +18,6 @@ namespace HackerRank1.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAll(int libraryId)
         {
             var books = await _booksService.Get(libraryId, null);
